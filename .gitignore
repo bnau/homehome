@@ -1,0 +1,5 @@
+/emby-connector.iml
+/node_modules/
+.env
+/tts/venv/
+/test.ogg

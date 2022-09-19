@@ -1,0 +1,3 @@
+[submodule "emby-api"]
+	path = emby-api
+	url = https://github.com/MediaBrowser/Emby.ApiClient.Javascript.git
