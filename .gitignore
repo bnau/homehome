@@ -1,5 +1,7 @@
 /emby-connector.iml
 /node_modules/
 .env
-/tts/venv/
+/venv/
 /test.ogg
+/chatbot/.rasa/
+/chatbot/models/
