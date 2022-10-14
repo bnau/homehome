@@ -3,10 +3,9 @@ import {getTrackUrls} from "./media-source.js";
 import {play} from "./player.js";
 
 import * as dotenv from 'dotenv'
+
 dotenv.config()
 
-let trackUrls = await getTrackUrls("Chateaubriand");
-
-play(trackUrls);
+play(await getTrackUrls("Chateaubriand"));
 
 speech('salut! Ça va?')
