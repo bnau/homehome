@@ -15,3 +15,8 @@ stories:
   - action: utter_greet
   - intent: mood_unhappy
   - action: utter_cheer_up
+
+- story: read book
+  steps:
+  - intent: read_book
+  - action: play_audio_book_action

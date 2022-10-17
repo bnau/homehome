@@ -5,6 +5,10 @@ intents:
   - goodbye
   - mood_happy
   - mood_unhappy
+  - read_book
+
+entities:
+  - author
 
 responses:
   utter_greet:
@@ -18,6 +22,9 @@ responses:
 
   utter_goodbye:
     - text: "À bientôt!"
+
+actions:
+  - play_audio_book_action
 
 session_config:
   session_expiration_time: 60
