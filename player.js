@@ -1,7 +1,5 @@
 import chromecastPlayer from "chromecast-player";
 import mime from "mime";
-import * as dotenv from 'dotenv'
-dotenv.config()
 
 
 const player = chromecastPlayer();
@@ -29,8 +27,8 @@ let ctrl = (err, p, ctx) => {
     };
 
     let initialSeek = () => {
-        let seconds = 0;
-        p.seek(seconds);
+        // let seconds = 0;
+        // p.seek(seconds);
     };
 
     p.on("playing", updateTitle);

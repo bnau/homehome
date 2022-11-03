@@ -1,8 +1,6 @@
 import apiClient from "./emby-api/apiclient.js";
 import storage from "./emby-api/appstorage-memory.js";
 import wakeonlan from "./emby-api/wakeonlan.js";
-import * as dotenv from 'dotenv'
-dotenv.config()
 
 
 const emby = new apiClient(
