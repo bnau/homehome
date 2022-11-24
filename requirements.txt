@@ -2,3 +2,4 @@ PyAudio==0.2.12
 pyttsx3==2.90
 vosk==0.3.42
 rasa==3.2.8
+huggingsound==0.1.6
