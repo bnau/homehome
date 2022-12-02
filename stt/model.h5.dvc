@@ -1,10 +1,10 @@
-md5: e42291c504bbe33c677eec7c13d3a26b
+md5: 33a4f6c098f6f7506f1c95b65ecf15e8
 frozen: true
 deps:
-- path: .\model.h5
+- path: ./model.h5
   repo:
-    url: D:\home\Documents\projets\personal_setup\fine-tuning
-    rev_lock: 6b0a289b66a5fc60e0786ad1381f502ba3fd9698
+    url: git@gitlab.ruche-labs.net:talanlabs/innovation/voiceactionizerfinetuning.git
+    rev_lock: 3d7b214315b9717021f67656c3cbfc208e5a9a6e
 outs:
 - md5: 60964ba27add74944b77c4072d8229be
   size: 19559184
