@@ -1,9 +1,5 @@
-import * as dotenv from 'dotenv';
 import * as player from 'chromecast-player';
-import mime from 'mime';
 import { Injectable } from '@nestjs/common';
-
-dotenv.config();
 
 @Injectable()
 export class PlayerService {

@@ -2,12 +2,14 @@ import { Injectable } from '@nestjs/common';
 import { ActionDto } from './action.dto';
 import { MediaSourceService } from './media-source.service';
 import { PlayerService } from './player.service';
+import {SwitchAudioService} from './switch-audio.service';
 
 @Injectable()
 export class AppService {
   constructor(
     private readonly mediaSourceService: MediaSourceService,
     private readonly playerService: PlayerService,
+    private readonly switchAudioService: SwitchAudioService,
   ) {}
   async getHello(action: ActionDto): Promise<string> {
     const author = action.tracker.latest_message.entities.filter(
