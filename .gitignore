@@ -1,9 +1,1 @@
 /emby-connector.iml
-/node_modules/
-.env
-/venv/
-/test.ogg
-/chatbot/.rasa/
-/chatbot/models/
-/stt/model_old/
-/stt/model/

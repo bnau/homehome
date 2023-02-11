@@ -1,0 +1,6 @@
+/venv/
+/test.ogg
+/chatbot/.rasa/
+/chatbot/models/
+/stt/model_old/
+/stt/model/
