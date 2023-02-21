@@ -13,7 +13,7 @@ export interface ActionDto {
   next_action: string;
   tracker: {
     sender_id: string;
-    slots: { session_started_metadata: [] };
+    slots: Record<string, string> & { session_started_metadata: [] };
     latest_message: {
       intent: any;
       entities: Array<{

@@ -1,30 +1,39 @@
 version: "3.1"
 
 intents:
-  - greet
-  - goodbye
-  - mood_happy
-  - mood_unhappy
+  - switch_audio
   - read_book
+  - annuler
+  - enter_data:
+      use_entities: []
 
 entities:
   - author
 
+slots:
+  audio_input:
+    type: any
+    influence_conversation: false
+    mappings:
+      - type: from_text
+        intent: enter_data
+
+
 responses:
-  utter_greet:
-  - text: "Salut! Ça va?"
+  utter_annuler:
+  - text: "Ok, tant pis"
+  utter_ask_audio_input:
+  - text: "Quel chiffre?"
 
-  utter_cheer_up:
-  - text: "Peut-on faire quelque chose pour que ça aille mieux?"
-
-  utter_happy:
-  - text: "Ok, top!"
-
-  utter_goodbye:
-    - text: "À bientôt!"
+forms:
+  switch_audio_form:
+    required_slots:
+      - audio_input
 
 actions:
-  - play_audio_book_action
+  - action_play_audio_book
+  - action_store_audio_input
+  - action_annuler
 
 session_config:
   session_expiration_time: 60

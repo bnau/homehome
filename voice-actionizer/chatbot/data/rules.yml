@@ -2,7 +2,22 @@ version: "3.1"
 
 rules:
 
-- rule: Say goodbye anytime the user says goodbye
-  steps:
-  - intent: goodbye
-  - action: utter_goodbye
+  - rule: Annuler à tout moment
+    steps:
+    - intent: annuler
+    - action: utter_annuler
+    - action: action_annuler
+
+  - rule: switch audio
+    steps:
+      - intent: switch_audio
+      - action: switch_audio_form
+      - active_loop: switch_audio_form
+
+  - rule: Submit form
+    condition:
+      - active_loop: switch_audio_form
+    steps:
+      - action: switch_audio_form
+      - active_loop: null
+      - action: action_store_audio_input

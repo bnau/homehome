@@ -28,7 +28,7 @@ export class PlayerService {
       {
         address: process.env.CHROMECAST_IP,
         myip: process.env.SERVER_IP,
-        playlist: trackUrls.map((path) => ({ path, type: "audio/mpeg" })),
+        playlist: trackUrls.map((path) => ({ path, type: 'audio/mpeg' })),
       },
       (err, p, ctx) => {
         if (err) {
@@ -77,7 +77,6 @@ export class PlayerService {
           }
         };
 
-        let l;
         p.on('status', (status, memo) => {
           console.log(`status: ${status}`);
           console.log(`memo: ${memo}`);

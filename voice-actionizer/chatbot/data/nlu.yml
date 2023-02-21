@@ -1,32 +1,23 @@
 version: "3.1"
 
 nlu:
-- intent: greet
+- intent: annuler
   examples: |
-    - bonjour
-    - hello
-    - salut
-    - bonsoir
-    - wesh
+    - annuler
+    - stop
+    - arrête
 
-- intent: goodbye
+- intent: switch_audio
   examples: |
-    - au revoir
-    - à bientôt
-    - bonne soirée
+    - switch audio
+    - switch
 
-- intent: mood_unhappy
+- intent: enter_data
   examples: |
-    - ça va pas
-    - c'est horrible
-    - je suis pas content
-
-- intent: mood_happy
-  examples: |
-    - ça va super
-    - nickel
-    - je suis content
-
+    - 1
+    - 2
+    - 3
+    - 4
 
 - intent: read_book
   examples: |
