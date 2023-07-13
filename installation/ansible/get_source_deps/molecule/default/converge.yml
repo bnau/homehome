@@ -1,0 +1,7 @@
+---
+- name: Converge
+  hosts: all
+  tasks:
+    - name: "Include homehome.get_source_deps"
+      include_role:
+        name: "homehome.get_source_deps"

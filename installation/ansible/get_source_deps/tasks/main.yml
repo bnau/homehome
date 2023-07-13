@@ -1,0 +1,8 @@
+---
+- name: APT update
+  ansible.builtin.apt:
+    update_cache: yes
+- name: Install nginx.
+  ansible.builtin.package:
+    name: nginx
+    state: present
