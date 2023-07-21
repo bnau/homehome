@@ -10,6 +10,9 @@ users:
     ssh_authorized_keys:
       - $ssh_public_key
 
+package_update: true
+package_upgrade: true
+
 runcmd:
 - [ sed, -i, s/REGDOMAIN=/REGDOMAIN=FR/g, /etc/default/crda ]
 - [ netplan, apply ]

@@ -72,6 +72,7 @@ build {
       "sed -i 's/$wifi_ssid/${var.wifi_ssid}/g' /boot/firmware/network-config",
       "sed -i 's/$wifi_password/${var.wifi_password}/g' /boot/firmware/network-config",
       "sed -i '/$ssh_public_key/ r /tmp/id_rsa.pub' /boot/firmware/user-data",
+      "sed -i 's/\r$//' /boot/firmware/user-data",
       "sed -i -z 's/$ssh_public_key\\n//g' /boot/firmware/user-data",
       "rm /tmp/id_rsa.pub"
     ]
