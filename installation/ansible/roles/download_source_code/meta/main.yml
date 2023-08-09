@@ -1,0 +1,6 @@
+galaxy_info:
+  author: bnau
+  namespace: local
+  description: Get source code from git repository
+  license: MIT
+  min_ansible_version: "2.1"

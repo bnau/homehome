@@ -1,8 +1,0 @@
----
-- name: Verify
-  hosts: all
-  gather_facts: false
-  tasks:
-    - name: Nginx should be installed.
-      ansible.builtin.stat:
-        path: /usr/sbin/nginx
