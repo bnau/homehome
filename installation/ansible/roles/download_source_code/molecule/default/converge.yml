@@ -1,0 +1,13 @@
+---
+- name: Converge
+  hosts: all
+
+  pre_tasks:
+    - name: Update apt cache.
+      ansible.builtin.apt:
+        update_cache: yes
+
+  tasks:
+    - name: "Include local.download_source_code role"
+      ansible.builtin.include_role:
+        name: "local.download_source_code"

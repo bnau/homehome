@@ -1,0 +1,32 @@
+---
+- name: Install required packages
+  become: yes
+  ansible.builtin.package:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - git-all
+
+- name: Ensure .ssh directory exists.
+  ansible.builtin.file:
+    dest: "{{ github_dest_key | dirname }}"
+    mode: 0700
+    state: directory
+
+- name: Install ssh key
+  ansible.builtin.copy:
+    src: "{{ github_source_key }}"
+    dest: "{{ github_dest_key }}"
+    mode: 0600
+
+- name: Update repository
+  ansible.builtin.git:
+    repo: git@github.com:bnau/homehome.git
+    dest: /opt/homehome
+    accept_hostkey: yes
+    key_file: "{{ github_dest_key }}"
+
+- name: Add env file for action server
+  ansible.builtin.copy:
+    src: files/env_action_server
+    dest: /opt/homehome/action-server/.env

@@ -1,0 +1,6 @@
+---
+- name: Install homehome project
+  hosts: all
+
+  roles:
+    - download_source_code

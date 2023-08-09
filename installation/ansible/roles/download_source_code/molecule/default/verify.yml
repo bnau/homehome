@@ -1,0 +1,29 @@
+---
+- name: Verify
+  hosts: all
+  tasks:
+    - name: Include default vars
+      ansible.builtin.include_vars:
+        dir: '{{ lookup("env", "MOLECULE_PROJECT_DIRECTORY") }}/vars/'
+        extensions:
+          - 'yml'
+    - name: Update repository
+      ansible.builtin.git:
+        repo: git@github.com:bnau/homehome.git
+        dest: /opt/homehome
+        version: origin/main
+        clone: no
+        key_file: "{{ github_dest_key }}"
+      register: git_checkout
+    - name: Test if git checkout hasn't changed
+      ansible.builtin.assert:
+        that: not git_checkout.changed
+        fail_msg: "Git checkout has changed"
+    - name: stat action server env file exists
+      stat:
+        path: /opt/homehome/action-server/.env
+        register: action_server_env_file
+    - name: Test if action server env file exists
+      ansible.builtin.assert:
+        that: action_server_env_file.stat.exists
+        fail_msg: "Action server env file doesn't exist"
