@@ -5,11 +5,17 @@ driver:
   name: podman
 platforms:
   - name: instance
-    image: ubuntu:22.04
+    image: ubuntu
+    dockerfile: Dockerfile
+    command: /sbin/init
 provisioner:
   name: ansible
   config_options:
     defaults:
       vault_password_file: "${MOLECULE_SCENARIO_DIRECTORY}/../../../vault.pw"
+      gathering: smart
+      fact_caching: jsonfile
+      fact_caching_connection: /tmp/facts_cache
+      fact_caching_timeout: 7200
 verifier:
   name: ansible

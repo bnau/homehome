@@ -1,0 +1,62 @@
+---
+- name: Install required packages
+  become: yes
+  ansible.builtin.package:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - systemd
+    - curl
+    - build-essential
+    - libbluetooth-dev
+
+- name: Download setup_18.x file to tmp directory
+  ansible.builtin.get_url:
+    url: https://deb.nodesource.com/setup_18.x
+    dest: /tmp/
+    mode: 0766
+
+- name: Execute setup_18.x script
+  ansible.builtin.shell: /tmp/setup_18.x
+
+- name: Remove setup_18.x file
+  ansible.builtin.file:
+    path: /tmp/setup_18.x
+    state: absent
+
+- name: Install NodeJS
+  become: yes
+  ansible.builtin.package:
+    name: nodejs
+    state: present
+
+- name: Add env file for action server
+  ansible.builtin.copy:
+    src: files/env_action_server
+    dest: /opt/homehome/action-server/.env
+    mode: 0644
+
+- name: Create action_server service
+  become: yes
+  ansible.builtin.copy:
+    content: |
+      [Unit]
+      Description=Action Server
+
+      [Service]
+      Type=simple
+      User={{ ansible_user_id }}
+      WorkingDirectory=/opt/homehome/action-server
+      ExecStart=/usr/bin/npm start
+      Restart=on-failure
+
+      [Install]
+      WantedBy=multi-user.target
+    dest: /etc/systemd/system/action_server.service
+    mode: 0644
+  notify: Reload the SystemD to re-read configurations
+
+- name: Restart action server if source code was upgraded
+  ansible.builtin.command: /bin/true
+  notify: Restart action server
+  when: source_upgraded

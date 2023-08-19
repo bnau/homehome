@@ -19,14 +19,15 @@
     dest: "{{ github_dest_key }}"
     mode: 0600
 
-- name: Update repository
+- name: Checkout repository
   ansible.builtin.git:
     repo: git@github.com:bnau/homehome.git
     dest: /opt/homehome
     accept_hostkey: yes
     key_file: "{{ github_dest_key }}"
+  register: git_checkout
 
-- name: Add env file for action server
-  ansible.builtin.copy:
-    src: files/env_action_server
-    dest: /opt/homehome/action-server/.env
+- name: Was source code upgraded
+  ansible.builtin.set_fact:
+    cacheable: yes
+    source_upgraded: git_checkout.changed
