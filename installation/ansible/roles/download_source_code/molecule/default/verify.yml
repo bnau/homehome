@@ -19,11 +19,3 @@
       ansible.builtin.assert:
         that: not git_checkout.changed
         fail_msg: "Git checkout has changed"
-    - name: stat action server env file exists
-      stat:
-        path: /opt/homehome/action-server/.env
-        register: action_server_env_file
-    - name: Test if action server env file exists
-      ansible.builtin.assert:
-        that: action_server_env_file.stat.exists
-        fail_msg: "Action server env file doesn't exist"

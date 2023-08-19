@@ -1,0 +1,8 @@
+---
+- name: Converge
+  hosts: all
+
+  tasks:
+    - name: "Include local.action_server"
+      ansible.builtin.include_role:
+        name: "local.action_server"
