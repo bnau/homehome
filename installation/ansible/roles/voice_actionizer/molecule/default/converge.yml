@@ -1,5 +1,5 @@
 ---
-- name: Prepare
+- name: Converge
   hosts: all
 
   pre_tasks:
@@ -8,3 +8,8 @@
         update_cache: yes
   roles:
     - download_source_code
+
+  tasks:
+    - name: "Include local.voice_actionizer"
+      ansible.builtin.include_role:
+        name: "local.voice_actionizer"

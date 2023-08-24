@@ -26,8 +26,3 @@
     accept_hostkey: yes
     key_file: "{{ github_dest_key }}"
   register: git_checkout
-
-- name: Was source code upgraded
-  ansible.builtin.set_fact:
-    cacheable: yes
-    source_upgraded: git_checkout.changed

@@ -1,0 +1,12 @@
+---
+# This is an example playbook to execute Ansible tests.
+
+- name: Verify
+  hosts: all
+  tasks:
+    - name: Get Service Status
+      ansible.builtin.service_facts:
+      register: services_state
+    - name: Assert voice actionizer is running
+      ansible.builtin.assert:
+        that: services_state.ansible_facts.services['voice_actionizer.service'].state == "running"

@@ -1,0 +1,65 @@
+---
+- name: Add deadsnakes PPA
+  become: yes
+  ansible.builtin.apt_repository:
+    repo: ppa:deadsnakes/ppa
+    state: present
+
+- name: Install required packages
+  become: yes
+  ansible.builtin.package:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+  with_items:
+    - systemd
+    - curl
+    - unzip
+    - python3.8-venv
+    - python3.8-dev
+    - build-essential
+    - portaudio19-dev
+
+- name: Ensure stt model directory exists.
+  ansible.builtin.file:
+    dest: /opt/homehome/voice-actionizer/stt/model
+    mode: 0766
+    state: directory
+
+- name: Download and unzip stt model
+  ansible.builtin.unarchive:
+    src: https://alphacephei.com/vosk/models/vosk-model-small-fr-0.22.zip
+    dest: /tmp
+    mode: 0766
+    remote_src: yes
+    creates: /tmp/vosk-model-small-fr-0.22
+
+- name: Move stt model
+  ansible.builtin.shell:
+    cmd: mv /tmp/vosk-model-small-fr-0.22/* /opt/homehome/voice-actionizer/stt/model
+    creates: /opt/homehome/voice-actionizer/stt/model/am
+
+- name: Create voice_actionizer service
+  become: yes
+  ansible.builtin.copy:
+    content: |
+      [Unit]
+      Description=Voice actionizer
+
+      [Service]
+      Type=simple
+      User={{ ansible_user_id }}
+      WorkingDirectory=/opt/homehome/voice-actionizer
+      ExecStart=/opt/homehome/voice-actionizer/venv/bin/python main.py
+      Restart=on-failure
+
+      [Install]
+      WantedBy=multi-user.target
+    dest: /etc/systemd/system/voice_actionizer.service
+    mode: 0644
+  notify: Reload the SystemD to re-read configurations
+
+- name: Restart voice actionizer if source code was upgraded
+  ansible.builtin.command: /bin/true
+  notify: Restart voice actionizer
+  when: yes
