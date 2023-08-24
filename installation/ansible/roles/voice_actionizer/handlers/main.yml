@@ -1,0 +1,33 @@
+---
+# handlers file for voice_actionizer
+
+- name: Reload the SystemD to re-read configurations
+  become: yes
+  ansible.builtin.systemd:
+    daemon-reload: yes
+
+- name: Create virtual environment
+  ansible.builtin.command: python3.8 -m venv /opt/homehome/voice-actionizer/venv
+  args:
+    creates: /opt/homehome/voice-actionizer/venv
+  listen: "Restart voice actionizer"
+
+- name: Install dependencies
+  ansible.builtin.pip:
+    requirements: /opt/homehome/voice-actionizer/requirements.txt
+    virtualenv: /opt/homehome/voice-actionizer/venv
+  listen: "Restart voice actionizer"
+
+- name: Train rasa model
+  ansible.builtin.shell:
+    chdir: /opt/homehome/voice-actionizer/chatbot
+    cmd: /opt/homehome/voice-actionizer/venv/bin/rasa train
+  listen: "Restart voice actionizer"
+
+- name: Enable the service and start
+  become: yes
+  ansible.builtin.systemd:
+    name: voice_actionizer
+    enabled: yes
+    state: restarted
+  listen: "Restart voice actionizer"

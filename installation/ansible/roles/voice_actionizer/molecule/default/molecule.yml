@@ -1,0 +1,24 @@
+---
+dependency:
+  name: galaxy
+driver:
+  name: podman
+platforms:
+  - name: instance
+    image: ubuntu
+    dockerfile: Dockerfile
+    command: /sbin/init
+provisioner:
+  name: ansible
+  env:
+    ANSIBLE_VERBOSITY: 3
+  config_options:
+    defaults:
+      vault_password_file: "${MOLECULE_SCENARIO_DIRECTORY}/../../../vault.pw"
+verifier:
+  name: ansible
+scenario:
+  name: default
+  converge_sequence:
+    - prepare
+    - converge

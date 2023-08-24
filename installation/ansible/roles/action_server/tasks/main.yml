@@ -59,4 +59,4 @@
 - name: Restart action server if source code was upgraded
   ansible.builtin.command: /bin/true
   notify: Restart action server
-  when: source_upgraded
+  when: git_checkout.changed
