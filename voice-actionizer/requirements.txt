@@ -4,4 +4,3 @@ vosk==0.3.42
 rasa==3.2.8
 huggingsound==0.1.6
 websockets==10.0
-`
