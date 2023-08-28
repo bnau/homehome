@@ -1,15 +1,9 @@
 import asyncio
 import time
 
-from rasa.model import get_latest_model
-from rasa.core.agent import Agent
 from tts.main import say
-from rasa.utils.endpoints import EndpointConfig
 from vosk import Model, KaldiRecognizer
 import pyaudio
-
-nlu_model = get_latest_model("chatbot/models")
-agent = Agent.load(model_path=nlu_model, action_endpoint=EndpointConfig(url="http://localhost:3000"))
 
 vosk_model = Model(r"stt/model")
 recognizer_limited = KaldiRecognizer(vosk_model, 16000,
@@ -27,9 +21,8 @@ def process_audio(data, _frame_count, _time_info, _status):
             print(f"' {text} '")
             if text != '':
                 previous_text = text
-                result = asyncio.run(agent.handle_text(text))
-                if len(result) > 0:
-                    say(result[0]['text'])
+                if "livre" in text:
+                    say('ok')
     elif recognizer.AcceptWaveform(data):
         text = recognizer.Result()[14:-3]
         print(f"' {text} '")

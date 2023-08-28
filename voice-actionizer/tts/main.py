@@ -15,6 +15,8 @@ def _get_engine():
 
 def say(message):
     engine = _get_engine()
+    if engine is None:
+        return
     engine.say(message)
     engine.runAndWait()
     engine.stop()
