@@ -19,6 +19,9 @@
     - python3.8-dev
     - build-essential
     - portaudio19-dev
+    - espeak
+    - ffmpeg
+    - libespeak1
 
 - name: Ensure stt model directory exists.
   ansible.builtin.file:

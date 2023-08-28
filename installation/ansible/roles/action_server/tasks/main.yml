@@ -17,6 +17,7 @@
     mode: 0766
 
 - name: Execute setup_18.x script
+  become: yes
   ansible.builtin.shell: /tmp/setup_18.x
 
 - name: Remove setup_18.x file
@@ -59,4 +60,4 @@
 - name: Restart action server if source code was upgraded
   ansible.builtin.command: /bin/true
   notify: Restart action server
-  when: git_checkout.changed
+  when: yes
