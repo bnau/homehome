@@ -7,6 +7,10 @@ Vagrant.configure(2) do |config|
     v.memory = 1024
     v.cpus = 2
     v.customize [ "modifyvm", :id, "--uartmode1", "disconnected" ]
+    v.customize ["modifyvm", :id, "--audio", "dsound", "--audiocontroller", "hda"]
+    v.customize ["modifyvm", :id, "--audioin", "on"]
+    v.customize ["modifyvm", :id, "--audioout", "on"]
+    v.customize ["modifyvm", :id, "--usb", "on"]
   end
 
   config.vm.hostname = "homehome"

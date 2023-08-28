@@ -1,6 +1,21 @@
 ---
 - name: Install homehome project
-  hosts: all
+  hosts: pi
+
+  pre_tasks:
+    - name: Update apt cache.
+      become: yes
+      ansible.builtin.apt:
+        update_cache: yes
+        cache_valid_time: 3600
+    - name: Make opt directory writable
+      become: yes
+      ansible.builtin.file:
+        path: /opt
+        mode: 0777
+        state: directory
 
   roles:
     - download_source_code
+    - action_server
+    - voice_actionizer

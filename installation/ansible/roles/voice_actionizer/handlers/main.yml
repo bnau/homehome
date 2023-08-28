@@ -18,10 +18,11 @@
     virtualenv: /opt/homehome/voice-actionizer/venv
   listen: "Restart voice actionizer"
 
-- name: Train rasa model
-  ansible.builtin.shell:
-    chdir: /opt/homehome/voice-actionizer/chatbot
-    cmd: /opt/homehome/voice-actionizer/venv/bin/rasa train
+- name: Upload rasa models
+  ansible.builtin.copy:
+    src: files/models/
+    dest: /opt/homehome/voice-actionizer/chatbot/models
+    mode: 0644
   listen: "Restart voice actionizer"
 
 - name: Enable the service and start
