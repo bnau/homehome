@@ -18,13 +18,6 @@
     virtualenv: /opt/homehome/voice-actionizer/venv
   listen: "Restart voice actionizer"
 
-- name: Upload rasa models
-  ansible.builtin.copy:
-    src: files/models/
-    dest: /opt/homehome/voice-actionizer/chatbot/models
-    mode: 0644
-  listen: "Restart voice actionizer"
-
 - name: Enable the service and start
   become: yes
   ansible.builtin.systemd:

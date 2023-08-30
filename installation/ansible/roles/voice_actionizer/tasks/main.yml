@@ -1,4 +1,11 @@
 ---
+- name: Add current user to audio group
+  become: yes
+  ansible.builtin.user:
+    name: "{{ ansible_user_id }}"
+    groups: audio
+    append: yes
+
 - name: Add deadsnakes PPA
   become: yes
   ansible.builtin.apt_repository:
@@ -22,6 +29,7 @@
     - espeak
     - ffmpeg
     - libespeak1
+    - alsa-utils
 
 - name: Ensure stt model directory exists.
   ansible.builtin.file:
