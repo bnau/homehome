@@ -1,4 +1,3 @@
-import asyncio
 import time
 
 from tts.main import say
@@ -6,9 +5,10 @@ from vosk import Model, KaldiRecognizer
 import pyaudio
 
 vosk_model = Model(r"stt/model")
-recognizer_limited = KaldiRecognizer(vosk_model, 16000,
+rate = 48000
+recognizer_limited = KaldiRecognizer(vosk_model, rate,
                                      '["switch audio", "bonjour", "lis un livre de chateaubriand", "annuler"]')
-recognizer = KaldiRecognizer(vosk_model, 16000)
+recognizer = KaldiRecognizer(vosk_model, rate)
 
 previous_text = ""
 text = ""
@@ -38,7 +38,7 @@ while True:
         if mic is None:
             mic = pyaudio.PyAudio()
         if stream is None:
-            stream = mic.open(format=pyaudio.paInt16, channels=1, rate=16000, input=True, frames_per_buffer=8192, stream_callback=process_audio)
+            stream = mic.open(format=pyaudio.paInt16, channels=1, rate=rate, input=True, frames_per_buffer=8192, stream_callback=process_audio)
         if not stream.is_active() or stream.is_stopped():
             raise Exception("stream dead")
     except Exception as e:
