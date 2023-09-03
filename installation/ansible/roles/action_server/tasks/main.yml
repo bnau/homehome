@@ -1,6 +1,6 @@
 ---
 - name: Install required packages
-  become: yes
+  become: true
   ansible.builtin.package:
     name: "{{ item }}"
     state: present
@@ -17,7 +17,7 @@
     mode: 0766
 
 - name: Execute setup_18.x script
-  become: yes
+  become: true
   ansible.builtin.shell: /tmp/setup_18.x
 
 - name: Remove setup_18.x file
@@ -26,7 +26,7 @@
     state: absent
 
 - name: Install NodeJS
-  become: yes
+  become: true
   ansible.builtin.package:
     name: nodejs
     state: present
@@ -38,7 +38,7 @@
     mode: 0644
 
 - name: Create action_server service
-  become: yes
+  become: true
   ansible.builtin.copy:
     content: |
       [Unit]

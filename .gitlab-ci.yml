@@ -1,13 +1,29 @@
 stages:
   - build
   - test
+  - deploy
 
-job_build:
+variables:
+  GIT_SUBMODULE_STRATEGY: recursive
+  FF_USE_FASTZIP: "true"
+  CACHE_COMPRESSION_LEVEL: fastest
+  TRANSFER_METER_FREQUENCY: 5s
+
+build_action_server:
   stage: build
+  image: action-server
   script:
-    - echo "Building the project"
+    - cd action-server
+    - npm ci
+    - npm run build
+  artifacts:
+    paths:
+      - action-server/dist
 
-job_test:
+test_action_server:
   stage: test
+  image: action-server
   script:
-    - echo "Running tests"
+    - cd action-server
+    - npm ci
+    - npm run test
