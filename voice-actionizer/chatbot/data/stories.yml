@@ -1,0 +1,8 @@
+version: "3.1"
+
+stories:
+
+- story: read book
+  steps:
+  - intent: read_book
+  - action: action_play_audio_book
