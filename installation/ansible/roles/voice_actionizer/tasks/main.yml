@@ -31,13 +31,13 @@
     - libespeak1
     - alsa-utils
 
-- name: Ensure stt model directory exists.
+- name: Ensure driving.stt model directory exists.
   ansible.builtin.file:
-    dest: /opt/homehome/voice-actionizer/stt/model
+    dest: /opt/homehome/voice-actionizer/driving.stt/model
     mode: 0766
     state: directory
 
-- name: Download and unzip stt model
+- name: Download and unzip driving.stt model
   ansible.builtin.unarchive:
     src: https://alphacephei.com/vosk/models/vosk-model-small-fr-0.22.zip
     dest: /tmp
@@ -45,10 +45,10 @@
     remote_src: yes
     creates: /tmp/vosk-model-small-fr-0.22
 
-- name: Move stt model
+- name: Move driving.stt model
   ansible.builtin.shell:
-    cmd: mv /tmp/vosk-model-small-fr-0.22/* /opt/homehome/voice-actionizer/stt/model
-    creates: /opt/homehome/voice-actionizer/stt/model/am
+    cmd: mv /tmp/vosk-model-small-fr-0.22/* /opt/homehome/voice-actionizer/driving.stt/model
+    creates: /opt/homehome/voice-actionizer/driving.stt/model/am
 
 - name: Create voice_actionizer service
   become: yes

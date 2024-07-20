@@ -34,7 +34,7 @@
 - name: Add env file for action server
   ansible.builtin.copy:
     src: files/env_action_server
-    dest: /opt/homehome/action-server/.env
+    dest: /opt/homehome/action-server/.env.secret
     mode: 0644
 
 - name: Create action_server service

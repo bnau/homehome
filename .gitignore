@@ -1,7 +1,7 @@
-/emby-connector.iml
+/homehome.iml
 /voice-actionizer/voice-actionizer.iml
 /installation/ansible/.vagrant/
 builds/
 cache/
-/.direnv
-/homehome.iml
+/.direnv/
+.env.secret

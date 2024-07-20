@@ -2,19 +2,19 @@ import os
 import time
 import numpy as np
 
-from rasa.model import get_latest_model
-from rasa.core.agent import Agent
-from tts.main import say
-from rasa.utils.endpoints import EndpointConfig
+# from rasa.model import get_latest_model
+# from rasa.core.agent import Agent
+# from rasa.utils.endpoints import EndpointConfig
+from driven.tts.main import say
 from vosk import Model, KaldiRecognizer
 import soundcard as sc
 import wave
 from scipy.io.wavfile import write
 
-nlu_model = get_latest_model("chatbot/models")
-agent = Agent.load(model_path=nlu_model, action_endpoint=EndpointConfig(url="http://localhost:3000"))
+# nlu_model = get_latest_model("chatbot/models")
+# agent = Agent.load(model_path=nlu_model, action_endpoint=EndpointConfig(url="http://localhost:3000"))
 
-vosk_model = Model(r"stt/model")
+vosk_model = Model(r"driving/stt/model")
 rate = 48000
 recognizer_limited = KaldiRecognizer(vosk_model, rate,
                                      '["switch audio", "bonjour", "lis un livre de chateaubriand", "annuler"]')
@@ -31,7 +31,7 @@ def process_audio(data):
             print(f"' {text} '")
             if text != '':
                 previous_text = text
-                result = asyncio.run(agent.handle_text(text))
+                result = [{text: text}]
                 if len(result) > 0:
                     say(result[0]['text'])
     elif recognizer.AcceptWaveform(data):
