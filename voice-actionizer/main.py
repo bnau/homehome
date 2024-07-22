@@ -1,8 +1,12 @@
+import os
 import time
+import numpy as np
 
 from tts.main import say
 from vosk import Model, KaldiRecognizer
-import pyaudio
+import soundcard as sc
+import wave
+from scipy.io.wavfile import write
 
 vosk_model = Model(r"stt/model")
 rate = 48000
@@ -13,7 +17,7 @@ recognizer = KaldiRecognizer(vosk_model, rate)
 previous_text = ""
 text = ""
 
-def process_audio(data, _frame_count, _time_info, _status):
+def process_audio(data):
     global previous_text
     if previous_text == "bonjour":
         if recognizer_limited.AcceptWaveform(data):
@@ -29,26 +33,29 @@ def process_audio(data, _frame_count, _time_info, _status):
 
         if text != '':
             previous_text = text
-    return (data, pyaudio.paContinue)
 
 mic=None
 stream=None
+rec_sec = 2
 while True:
-    try:
+    # try:
         if mic is None:
-            mic = pyaudio.PyAudio()
+            mic = sc.default_microphone()
         if stream is None:
-            stream = mic.open(format=pyaudio.paInt16, channels=1, rate=rate, input=True, frames_per_buffer=8192, stream_callback=process_audio)
-        if not stream.is_active() or stream.is_stopped():
-            raise Exception("stream dead")
-    except Exception as e:
-        print(e)
-        try:
-            mic.terminate()
-            stream.stop_stream()
-            stream.close()
-        except:
-            pass
-        stream = None
-        mic = None
-    time.sleep(.1)
+            data = mic.record(samplerate=rate, numframes=rate*rec_sec)
+            write('recorded.wav',rate,np.int16(data / np.max(np.abs(data)) * 32767))
+            with wave.open('recorded.wav', 'rb') as f:
+                process_audio(f.readframes(rate*rec_sec))
+    # if not stream.is_active() or stream.is_stopped():
+    #         raise Exception("stream dead")
+    # except Exception as e:
+    #     print(e)
+    #     # try:
+    #     #     mic.terminate()
+    #     #     stream.stop_stream()
+    #     #     stream.close()
+    #     # except:
+    #     #     pass
+    #     stream = None
+    #     mic = None
+    # time.sleep(.1)
