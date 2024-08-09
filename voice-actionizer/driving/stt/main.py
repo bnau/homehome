@@ -1,18 +1,8 @@
-import os
-import time
 import numpy as np
 
-# from rasa.model import get_latest_model
-# from rasa.core.agent import Agent
-# from rasa.utils.endpoints import EndpointConfig
 from driven.tts.main import Tts
 from vosk import Model, KaldiRecognizer
 import soundcard as sc
-import wave
-from scipy.io.wavfile import write
-
-# nlu_model = get_latest_model("chatbot/models")
-# agent = Agent.load(model_path=nlu_model, action_endpoint=EndpointConfig(url="http://localhost:3000"))
 
 vosk_model = Model("driving/stt/model")
 rate = 48000
@@ -44,27 +34,14 @@ def process_audio(data):
             previous_text = text
 
 mic=None
-stream=None
 rec_sec = 2
 while True:
-    # try:
+    try:
         if mic is None:
             mic = sc.default_microphone()
-        if stream is None:
-            data = mic.record(samplerate=rate, numframes=rate*rec_sec)
-            write('recorded.wav',rate,np.int16(data / np.max(np.abs(data)) * 32767))
-            with wave.open('recorded.wav', 'rb') as f:
-                process_audio(f.readframes(rate*rec_sec))
-    # if not stream.is_active() or stream.is_stopped():
-    #         raise Exception("stream dead")
-    # except Exception as e:
-    #     print(e)
-    #     # try:
-    #     #     mic.terminate()
-    #     #     stream.stop_stream()
-    #     #     stream.close()
-    #     # except:
-    #     #     pass
-    #     stream = None
-    #     mic = None
-    # time.sleep(.1)
+        data = mic.record(samplerate=rate, numframes=rate*rec_sec)
+        process_audio(np.int16(data / np.max(np.abs(data)) * 32767).tobytes())
+    except Exception as e:
+        print(e)
+        mic = None
+
