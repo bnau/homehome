@@ -5,3 +5,8 @@ tasks:
     desc: Run voice actionizer
     cmds:
       - python -m driving.stt.main
+
+  cli:
+    desc: Run voice actionizer in cli mode
+    cmds:
+      - python -m driving.cli.main
