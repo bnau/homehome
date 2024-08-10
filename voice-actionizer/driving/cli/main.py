@@ -1,17 +1,21 @@
-from domain.instructor import Instructor
-from driven.inmemory.actionizer import InMemoryActionizer
-from driven.inmemory.answerer import InMemoryAnswerer
-from driven.tts.main import Tts
+import sys
 
-actionizer = InMemoryActionizer()
-answerer = Tts()
+from dependency_injector.wiring import inject, Provide
 
-entrypoint = Instructor(actionizer, answerer)
+from ext.containers import Cli
+from domain.driving_port.instructor import Instructor
 
-def main():
+
+@inject
+def main(
+        entrypoint: Instructor = Provide[Cli.domain.instructor],
+):
     while True:
         command = input('--> ')
         entrypoint.instruct(command)
 
+
 if __name__ == '__main__':
-    main()
+    application = Cli()
+    application.wire(modules=[__name__])
+    main(*sys.argv[1:])

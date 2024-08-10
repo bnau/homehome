@@ -4,14 +4,14 @@ from domain.driven_port.answerer import Answerer
 
 engine = None
 
+
 def _get_engine():
     global engine
     if engine is None:
         try:
             engine = pyttsx3.init()
-            print(engine.getProperty('voices'))
-            voice = engine.getProperty('voices')[0]
-            engine.setProperty('voice', 'french')
+            engine.setProperty('voice', 'fr')
+            engine.setProperty('rate', 150)
         except Exception as e:
             print(e)
             engine = None

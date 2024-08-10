@@ -1,5 +1,4 @@
 from domain.driven_port.actionizer import Actionizer
-from requests import post
 
 
 class InMemoryActionizer(Actionizer):

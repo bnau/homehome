@@ -1,10 +1,17 @@
+from abc import ABC, abstractmethod
+
 from domain.driven_port.actionizer import Actionizer
 from domain.driven_port.answerer import Answerer
-from domain.driving_port.entrypoint import Entrypoint
-from domain.intention import Intention
+from domain.model.intention import Intention
 
 
-class Instructor(Entrypoint):
+class Instructor(ABC):
+    @abstractmethod
+    def instruct(self, command: str):
+        pass
+
+
+class DomainInstructor:
     actionizer: Actionizer
     answerer: Answerer
 
