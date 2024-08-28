@@ -4,8 +4,11 @@ vosk==0.3.45
 dvc[gdrive]
 
 requests~=2.32.3
-numpy~=2.0.0
+numpy>=1.0.0
 SoundCard~=0.4.3
+
+langchain-ollama==0.1.1
+langchain-experimental==0.0.64
 
 dependency-injector>=4.42.0b1
 
