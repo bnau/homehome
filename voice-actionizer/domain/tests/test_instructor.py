@@ -14,6 +14,6 @@ def test_instructor_should_call_actionizer():
     )
 
     instructor = DomainInstructor(actionizer, answerer)
-    instructor.instruct("Dummy")
+    instructor.instruct("Lis un livre de Tolkien")
 
-    actionizer.read_book.assert_called_once_with("Dummy")
+    actionizer.read_book.assert_called_once_with("Tolkien")

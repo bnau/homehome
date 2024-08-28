@@ -1,6 +1,21 @@
 version: 3
 
 tasks:
+  install:ollama:
+    internal: true
+    cmds:
+      - curl -fsSL https://ollama.com/install.sh | sh
+      - ollama pull phi3
+    status:
+      - ollama show phi3
+
+  install:
+    desc: Install voice actionizer
+    deps:
+      - task: install:ollama
+    cmds:
+      - pip install -r requirements.txt
+
   run:
     desc: Run voice actionizer
     cmds:
