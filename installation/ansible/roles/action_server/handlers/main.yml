@@ -5,16 +5,3 @@
   become: yes
   ansible.builtin.systemd:
     daemon-reload: yes
-
-- name: Install dependencies
-  community.general.npm:
-    path: /opt/homehome/action-server
-  listen: "Restart action server"
-
-- name: Enable the service and start
-  become: yes
-  ansible.builtin.systemd:
-    name: action_server
-    enabled: yes
-    state: restarted
-  listen: "Restart action server"

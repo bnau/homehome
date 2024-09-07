@@ -1,6 +1,0 @@
----
-- name: Run action_server role
-  hosts: localhost
-  remote_user: root
-  roles:
-    - local.action_server

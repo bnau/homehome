@@ -16,6 +16,7 @@
         state: directory
 
   roles:
+    - install_ollama
     - download_source_code
     - action_server
     - voice_actionizer

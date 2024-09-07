@@ -22,10 +22,12 @@
     - systemd
     - curl
     - unzip
-    - python3.8-venv
-    - python3.8-dev
+    - python3.12
+    - python3.12-venv
+    - python3.12-dev
     - build-essential
     - portaudio19-dev
+    - pulseaudio
     - espeak
     - ffmpeg
     - libespeak1
@@ -33,11 +35,11 @@
 
 - name: Ensure driving.stt model directory exists.
   ansible.builtin.file:
-    dest: /opt/homehome/voice-actionizer/driving.stt/model
+    dest: /opt/homehome/voice-actionizer/driving/stt/model
     mode: 0766
     state: directory
 
-- name: Download and unzip driving.stt model
+- name: Download and unzip stt model
   ansible.builtin.unarchive:
     src: https://alphacephei.com/vosk/models/vosk-model-small-fr-0.22.zip
     dest: /tmp
@@ -45,10 +47,10 @@
     remote_src: yes
     creates: /tmp/vosk-model-small-fr-0.22
 
-- name: Move driving.stt model
+- name: Move stt model
   ansible.builtin.shell:
-    cmd: mv /tmp/vosk-model-small-fr-0.22/* /opt/homehome/voice-actionizer/driving.stt/model
-    creates: /opt/homehome/voice-actionizer/driving.stt/model/am
+    cmd: mv /tmp/vosk-model-small-fr-0.22/* /opt/homehome/voice-actionizer/driving/stt/model
+    creates: /opt/homehome/voice-actionizer/driving/stt/model/am
 
 - name: Create voice_actionizer service
   become: yes
@@ -56,13 +58,17 @@
     content: |
       [Unit]
       Description=Voice actionizer
+      Requires=sound.target
+      After=sound.target
 
       [Service]
       Type=simple
       User={{ ansible_user_id }}
       WorkingDirectory=/opt/homehome/voice-actionizer
-      ExecStart=/opt/homehome/voice-actionizer/venv/bin/python main.py
+      ExecStart=/opt/homehome/voice-actionizer/venv/bin/python -m driving.stt.main
       Restart=on-failure
+      Environment="XDG_RUNTIME_DIR=/run/user/1000"
+      Environment="PULSE_SERVER=unix:/mnt/wslg/PulseServer"
 
       [Install]
       WantedBy=multi-user.target
@@ -70,7 +76,30 @@
     mode: 0644
   notify: Reload the SystemD to re-read configurations
 
-- name: Restart voice actionizer if source code was upgraded
-  ansible.builtin.command: /bin/true
-  notify: Restart voice actionizer
-  when: yes
+- name: Flush handlers
+  ansible.builtin.meta: flush_handlers
+
+- name: Create virtual environment
+  ansible.builtin.command: python3.12 -m venv /opt/homehome/voice-actionizer/venv
+  args:
+    creates: /opt/homehome/voice-actionizer/venv
+
+- name: Upgrade pip
+  ansible.builtin.command: /opt/homehome/voice-actionizer/venv/bin/python -m pip install --upgrade pip
+  changed_when: false
+
+- name: Upgrade setuptools
+  ansible.builtin.command: /opt/homehome/voice-actionizer/venv/bin/python -m pip install --upgrade setuptools
+  changed_when: false
+
+- name: Install dependencies
+  ansible.builtin.command: /opt/homehome/voice-actionizer/venv/bin/python -m pip install -r /opt/homehome/voice-actionizer/requirements.txt
+  changed_when: false
+
+- name: Enable the service and start
+  become: yes
+  ansible.builtin.systemd:
+    name: voice_actionizer
+    enabled: yes
+    state: restarted
+  changed_when: false

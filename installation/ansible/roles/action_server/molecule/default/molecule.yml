@@ -2,17 +2,20 @@
 dependency:
   name: galaxy
 driver:
-  name: podman
+   name: docker
 platforms:
-  - name: instance
-    image: ubuntu
-    dockerfile: Dockerfile
+  - name: action_server
+    image: homehome_molecule_test
     command: /sbin/init
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:rw
+    cgroupns_mode: host
+    privileged: true
+    pre_build_image: true
 provisioner:
   name: ansible
   config_options:
     defaults:
-      vault_password_file: "${MOLECULE_SCENARIO_DIRECTORY}/../../../vault.pw"
       gathering: smart
       fact_caching: jsonfile
       fact_caching_connection: /tmp/facts_cache
