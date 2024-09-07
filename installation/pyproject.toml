@@ -1,0 +1,12 @@
+[tool.poetry]
+name = "installation"
+version = "0.1.0"
+description = "Homephome installation"
+authors = ["bnau"]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+ansible = "^10.1.0"
+molecule-plugins = "^23.5.0"
+docker = "^7.0.0"
+requests = "2.31.0"

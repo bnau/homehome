@@ -1,7 +1,7 @@
-/homehome.iml
-/voice-actionizer/voice-actionizer.iml
-/installation/ansible/.vagrant/
-builds/
-cache/
-/.direnv/
+*.iml
+.vagrant
+builds
+cache
+.direnv
 .env.secret
+.task

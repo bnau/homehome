@@ -1,0 +1,29 @@
+version: 3
+
+tasks:
+  install:poetry:
+    internal: true
+    cmds:
+      - pip install poetry
+    status:
+      - poetry --version
+
+  install:
+    deps:
+      - task: install:poetry
+    cmds:
+      - poetry install --no-root
+
+  test:build-image:
+    internal: true
+    cmds:
+      - docker build -t homehome_molecule_test ansible
+    sources: 
+      - ansible/Dockerfile
+
+  test:
+    dir: ansible/roles
+    deps:
+      - task: test:build-image
+    cmds: 
+      - for d in ./*/molecule/.. ; do /bin/zsh -c "(cd "$d" && molecule test && cd -)"; done

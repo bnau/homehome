@@ -10,20 +10,29 @@
     - build-essential
     - libbluetooth-dev
 
+- name: Is NodeJS installed?
+  ansible.builtin.command: node --version
+  register: node_version
+  ignore_errors: yes
+  changed_when: false
+
 - name: Download setup_18.x file to tmp directory
   ansible.builtin.get_url:
     url: https://deb.nodesource.com/setup_18.x
     dest: /tmp/
     mode: 0766
+  when: node_version.rc != 0
 
 - name: Execute setup_18.x script
   become: true
   ansible.builtin.shell: /tmp/setup_18.x
+  when: node_version.rc != 0
 
 - name: Remove setup_18.x file
   ansible.builtin.file:
     path: /tmp/setup_18.x
     state: absent
+  when: node_version.rc != 0
 
 - name: Install NodeJS
   become: true
@@ -34,8 +43,12 @@
 - name: Add env file for action server
   ansible.builtin.copy:
     src: files/env_action_server
-    dest: /opt/homehome/action-server/.env.secret
+    dest: /opt/homehome/action-server/env_action_server
     mode: 0644
+
+- name: Install dependencies
+  community.general.npm:
+    path: /opt/homehome/action-server
 
 - name: Create action_server service
   become: true
@@ -50,6 +63,7 @@
       WorkingDirectory=/opt/homehome/action-server
       ExecStart=/usr/bin/npm start
       Restart=on-failure
+      EnvironmentFile=
 
       [Install]
       WantedBy=multi-user.target
@@ -57,7 +71,13 @@
     mode: 0644
   notify: Reload the SystemD to re-read configurations
 
-- name: Restart action server if source code was upgraded
-  ansible.builtin.command: /bin/true
-  notify: Restart action server
-  when: yes
+- name: Flush handlers
+  ansible.builtin.meta: flush_handlers
+
+- name: Enable the service and start
+  become: yes
+  ansible.builtin.systemd:
+    name: action_server
+    enabled: yes
+    state: restarted
+  changed_when: false

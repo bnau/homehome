@@ -1,0 +1,19 @@
+---
+- name: Is the Ollama service installed?
+  ansible.builtin.command: olama --version
+  register: ollama_version
+  ignore_errors: yes
+  changed_when: false
+
+- name: Install olama
+  ansible.builtin.command: curl -fsSL https://ollama.com/install.sh | sh
+  when: ollama_status.rc != 0
+
+- name: Ensure model is pulled
+  ansible.builtin.command: ollama show {{model}}
+  register: model_status
+  changed_when: false
+
+- name: Pull model
+  ansible.builtin.command: ollama pull {{model}}
+  when: model_status.rc != 0

@@ -4,6 +4,9 @@
 - name: Verify
   hosts: all
   tasks:
+    - name: Wait 10 seconds
+      ansible.builtin.pause:
+        seconds: 10
     - name: Get Service Status
       ansible.builtin.service_facts:
       register: services_state

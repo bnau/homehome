@@ -1,6 +1,0 @@
----
-- name: Run download_source_code role
-  hosts: localhost
-  remote_user: root
-  roles:
-    - local.download_source_code
