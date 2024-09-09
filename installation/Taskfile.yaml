@@ -27,3 +27,7 @@ tasks:
       - task: test:build-image
     cmds: 
       - for d in ./*/molecule/.. ; do /bin/zsh -c "(cd "$d" && molecule test && cd -)"; done
+
+  deploy:
+    cmds:
+      - ansible-playbook main.yml -i inventory

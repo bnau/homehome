@@ -19,10 +19,32 @@
     dest: "{{ github_dest_key }}"
     mode: 0600
 
+- name: Populate service facts
+  service_facts:
+
+- name: Stop action_server service if it is running
+  become: yes
+  ansible.builtin.systemd:
+    name: action_server
+    enabled: yes
+    state: stopped
+  changed_when: false
+  when: "'action_server.service' in ansible_facts.services"
+
+- name: Stop voice_actionizer service if it is running
+  become: yes
+  ansible.builtin.systemd:
+    name: voice_actionizer
+    enabled: yes
+    state: stopped
+  changed_when: false
+  when: "'voice_actionizer.service' in ansible_facts.services"
+
 - name: Checkout repository
   ansible.builtin.git:
     repo: git@github.com:bnau/homehome.git
     dest: /opt/homehome
     accept_hostkey: yes
     key_file: "{{ github_dest_key }}"
+    force: yes
   register: git_checkout
