@@ -16,7 +16,7 @@
   become: yes
   ansible.builtin.package:
     name: "{{ item }}"
-    state: present
+    state: latest
     update_cache: yes
   with_items:
     - systemd
@@ -32,6 +32,13 @@
     - ffmpeg
     - libespeak1
     - alsa-utils
+
+- name: Add user to pulse-access group
+  become: yes
+  ansible.builtin.user:
+    name: "{{ ansible_user_id }}"
+    groups: pulse-access
+    append: yes
 
 - name: Ensure driving.stt model directory exists.
   ansible.builtin.file:
@@ -54,24 +61,8 @@
 
 - name: Create voice_actionizer service
   become: yes
-  ansible.builtin.copy:
-    content: |
-      [Unit]
-      Description=Voice actionizer
-      Requires=sound.target
-      After=sound.target
-
-      [Service]
-      Type=simple
-      User={{ ansible_user_id }}
-      WorkingDirectory=/opt/homehome/voice-actionizer
-      ExecStart=/opt/homehome/voice-actionizer/venv/bin/python -m driving.stt.main
-      Restart=on-failure
-      Environment="XDG_RUNTIME_DIR=/run/user/1000"
-      Environment="PULSE_SERVER=unix:/mnt/wslg/PulseServer"
-
-      [Install]
-      WantedBy=multi-user.target
+  ansible.builtin.template:
+    src: voice_actionizer.service.j2
     dest: /etc/systemd/system/voice_actionizer.service
     mode: 0644
   notify: Reload the SystemD to re-read configurations

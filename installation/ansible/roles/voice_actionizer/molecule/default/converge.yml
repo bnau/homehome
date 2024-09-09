@@ -13,3 +13,5 @@
     - name: "Include local.voice_actionizer"
       ansible.builtin.include_role:
         name: "local.voice_actionizer"
+      vars:
+        pulse_config: PULSE_SERVER=unix:/mnt/wslg/PulseServer

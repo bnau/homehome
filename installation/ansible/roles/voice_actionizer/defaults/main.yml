@@ -1,0 +1,2 @@
+---
+pulse_config: PULSE_RUNTIME_PATH=/run/user/1000/pulse/

@@ -24,13 +24,13 @@ def process_audio(entrypoint: Instructor, data):
     if previous_text == "bonjour":
         if recognizer_limited.AcceptWaveform(data):
             text = recognizer_limited.Result()[14:-3]
-            print(f"' {text} '")
+            print(f"' {text} '", flush=True)
             if text != '':
                 previous_text = text
                 entrypoint.instruct(text)
     elif recognizer.AcceptWaveform(data):
         text = recognizer.Result()[14:-3]
-        print(f"' {text} '")
+        print(f"' {text} '", flush=True)
 
         if text != '':
             previous_text = text
