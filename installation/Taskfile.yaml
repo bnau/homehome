@@ -29,5 +29,6 @@ tasks:
       - for d in ./*/molecule/.. ; do /bin/zsh -c "(cd "$d" && molecule test && cd -)"; done
 
   deploy:
+    dir: ansible
     cmds:
       - ansible-playbook main.yml -i inventory
