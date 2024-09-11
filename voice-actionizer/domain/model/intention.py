@@ -13,7 +13,7 @@ class IntentionFactory(BaseModel):
     title: Optional[str] = Field(title="Title", description="Title of the album",default="")
 
     def create_intention(self, actionizer: Actionizer, answerer: Answerer):
-        if self.action == "read_book":
+        if self.action == "readBook":
             return ReadIntention(actionizer, answerer, self.author)
         else:
             raise Exception("Unknown action")
