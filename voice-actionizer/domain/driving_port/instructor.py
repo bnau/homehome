@@ -9,6 +9,12 @@ from langchain_core.prompts import PromptTemplate
 from langchain_core.tools import tool
 from langchain_experimental.llms.ollama_functions import OllamaFunctions
 
+from langfuse.callback import CallbackHandler
+langfuse_handler = CallbackHandler(
+    public_key="pk-lf-3231235e-46b0-431d-9795-7d256ea27195",
+    secret_key="sk-lf-0195c5f1-f370-4e87-8394-cfc604773ab8",
+    host="http://localhost:3000"
+)
 
 class Instructor(ABC):
     @abstractmethod
@@ -25,7 +31,7 @@ class DomainInstructor:
     def __init__(self, actionizer: Actionizer, answerer: Answerer):
         self.actionizer = actionizer
         self.answerer = answerer
-        self.llm = OllamaFunctions(model="stablelm2", format="json", temperature=1000)
+        self.llm = OllamaFunctions(model="stablelm2", format="json")
 
 
     def instruct(self, command: str):
@@ -44,5 +50,5 @@ class DomainInstructor:
         )
 
         runnable = prompt | self.llm.with_structured_output(schema=IntentionFactory)
-        intent = runnable.invoke(command)
+        intent = runnable.invoke(command, config={"callbacks": [langfuse_handler]})
         intent.create_intention(self.actionizer, self.answerer).actionize()
