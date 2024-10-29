@@ -7,8 +7,10 @@ requests~=2.32.3
 numpy>=1.0.0
 SoundCard~=0.4.3
 
+langchain>=0.3
 langchain-ollama==0.1.1
 langchain-experimental==0.0.64
+langchain_milvus~=0.1.6
 langfuse
 
 dependency-injector>=4.42.0b1
