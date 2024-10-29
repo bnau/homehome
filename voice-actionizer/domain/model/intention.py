@@ -8,15 +8,15 @@ from typing import Optional
 
 
 class IntentionFactory(BaseModel):
-    action: Optional[str] = Field(title="Action", description="Action to perform",default="")
+    intention: Optional[str] = Field(title="Intention", description="Intention to perform",default="")
     author: Optional[str] = Field(title="Author", description="Author of the book",default="")
     title: Optional[str] = Field(title="Title", description="Title of the album",default="")
 
     def create_intention(self, actionizer: Actionizer, answerer: Answerer):
-        if self.action == "readBook":
+        if self.intention == "readBook":
             return ReadIntention(actionizer, answerer, self.author)
         else:
-            raise Exception("Unknown action")
+            raise Exception(f"Unknown intention {self.intention}")
 
 
 class Intention(ABC):
