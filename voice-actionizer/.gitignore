@@ -3,4 +3,3 @@
 /chatbot/.rasa/
 /chatbot/models/
 /driving/stt/model/
-milvus_example.db
