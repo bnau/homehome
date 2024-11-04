@@ -3,26 +3,25 @@ from typing import Union, Optional, Any
 
 from langchain.chains.retrieval import create_retrieval_chain
 from langchain_core.messages import BaseMessage
-from langchain_core.output_parsers import PydanticOutputParser, BaseOutputParser
+from langchain_core.output_parsers import BaseOutputParser
 from langchain_core.output_parsers.base import T
 from langchain_core.runnables import RunnableConfig
 
 from domain.driven_port.actionizer import Actionizer
 from domain.driven_port.answerer import Answerer
 from domain.model.intention import IntentionFactory
-from langchain.chains import RetrievalQA
-from langchain.chains.llm import LLMChain
-from langchain_core.prompts import PromptTemplate, ChatPromptTemplate
+from langchain_core.prompts import ChatPromptTemplate
 from langchain.chains.combine_documents import create_stuff_documents_chain
 
+from langchain_qdrant import QdrantVectorStore
+from qdrant_client import QdrantClient
+from qdrant_client.http.models import Distance, VectorParams
 from langchain_core.documents import Document
 
 from langchain_experimental.llms.ollama_functions import OllamaFunctions
 
 from langfuse.callback import CallbackHandler
-from langchain_milvus import Milvus
 from langchain_ollama import OllamaEmbeddings
-from langchain_community.llms import Ollama
 
 langfuse_handler = CallbackHandler(
     public_key="pk-lf-3231235e-46b0-431d-9795-7d256ea27195",
@@ -38,10 +37,17 @@ embeddings = OllamaEmbeddings(
     model="stablelm2",
 )
 
-vector_store = Milvus(
-    embedding_function=embeddings,
+client = QdrantClient(":memory:")
 
-    connection_args={"uri": URI},
+client.create_collection(
+    collection_name="demo_collection",
+    vectors_config=VectorParams(size=2048, distance=Distance.COSINE),
+)
+
+vector_store = QdrantVectorStore(
+    client=client,
+    collection_name="demo_collection",
+    embedding=embeddings,
 )
 
 vector_store.add_documents([
@@ -51,7 +57,7 @@ vector_store.add_documents([
     Document(
         page_content="l'attribut author est l'une des valeurs suivantes: Tolkien, Rowling.",
     ),
-], ids=["intention", "author"])
+])
 
 
 class IgnoreParser(BaseOutputParser):
