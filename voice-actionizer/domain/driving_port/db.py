@@ -8,14 +8,14 @@ client = QdrantClient(":memory:")
 
 client.create_collection(
     collection_name="demo_collection",
-    vectors_config=VectorParams(size=2048, distance=Distance.COSINE),
+    vectors_config=VectorParams(size=1024, distance=Distance.COSINE),
 )
 
 vector_store = QdrantVectorStore(
     client=client,
     collection_name="demo_collection",
     embedding=OllamaEmbeddings(
-        model="stablelm2",
+        model="mxbai-embed-large",
     ),
 )
 
