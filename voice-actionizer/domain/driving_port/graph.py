@@ -13,17 +13,23 @@ from langgraph.constants import START, END
 from langgraph.graph import StateGraph
 from typing_extensions import TypedDict
 
+from domain.driven_port.metadata_retriever import MetadataRetriever
 from domain.driving_port.db import add_document, get_db
 from domain.model.intention import IntentionFactory
 
 
-def init_db_chain(state):
-    add_document("l'attribut intention est l'une des valeurs suivantes en minuscule: readBook, playMusic.")
-    add_document("l'attribut author est l'une des valeurs suivantes: Tolkien, Rowling.")
+def init_db_chain(state, config):
+    metadata_retriever: MetadataRetriever = config["configurable"].get("metadataRetriever")
+    for album in metadata_retriever.get_albums():
+        add_document(f"\"{album.title}\" is the title of an album by the artist \"{album.artist}\".")
+
+    add_document("\"Tolkien\" is a book author")
+
     return state
 
-llm = OllamaFunctions(model="stablelm2", format="json")
-db=get_db()
+
+llm = OllamaFunctions(model="llama3.2", format="json")
+db = get_db()
 
 
 def chat_chain(state, config):
@@ -31,17 +37,26 @@ def chat_chain(state, config):
         [
             ("system",
              """
-             Tu es un expert en extraction d'informations.
-                                                
-             Extraits uniquement les informations pertinentes du texte.
-             Si tu ne connais pas la valeur d'un attribut, il n'a pas de valeur.
-             Les attributs à extraire sont: intention, author, title.
+             You are an expert in information extraction.
+             
+             You are given a text that contains information about a book or an album.
+             The text is in French, but don’t translate the extracted information.
+             
+             If you don’t find an attribute, leave it empty.
+             
+             The attributes to extract are: author, title, artist.
+             There is an additional attribute called intention, which can be either readBook or playAlbum.
+             tool is always IntentionFactory.
+             tool is not intention, as tool is always IntentionFactory.
              
              La réponse est de la forme:
              {{
                  "tool": "IntentionFactory",
                  "tool_input": {{
-                     ...
+                    "intention": ...
+                    "author": ...
+                    "title": ...
+                    "artist": ...
                  }}
              }}
              
@@ -51,11 +66,11 @@ def chat_chain(state, config):
             ("human", "{input}"),
         ]
     )
-    question_answer_chain = create_stuff_documents_chain(llm.with_structured_output(schema=IntentionFactory),
-                                                         prompt,
-                                                         output_parser=IgnoreParser())
-    runnable = create_retrieval_chain(db.as_retriever(), question_answer_chain)
-    response = runnable.invoke({"input": state["messages"][-1]}, config=config)['answer']
+    runnable = prompt | llm.with_structured_output(schema=IntentionFactory)
+
+    vectors = db.similarity_search(state["messages"][-1])
+
+    response = runnable.invoke({"input": state["messages"][-1], "context": vectors}, config=config)
     return {"messages": [response]}
 
 
@@ -86,4 +101,3 @@ def get_graph():
     workflow.add_edge("init_db", "chat")
     workflow.add_edge("chat", END)
     return workflow.compile(checkpointer=MemorySaver())
-

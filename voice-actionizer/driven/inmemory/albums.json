@@ -1,0 +1,118 @@
+{
+  "method": "slim.request",
+  "result": {
+    "albums_loop": [
+      {
+        "id": 10409,
+        "performance": "",
+        "favorites_url": "db:album.title=Motown%2050%3A%20Yesterday%2C%20Today%2C%20Forever&contributor.name=Stevie%20Wonder",
+        "favorites_title": "Motown 50: Yesterday, Today, Forever",
+        "album": "Motown 50: Yesterday, Today, Forever",
+        "year": 0,
+        "artist": "Stevie Wonder",
+        "artists": "Stevie Wonder"
+      },
+      {
+        "id": 10449,
+        "performance": "",
+        "favorites_url": "db:album.title=Motown%2050%3A%20Yesterday%2C%20Today%2C%20Forever&contributor.name=The%20Temptations",
+        "favorites_title": "Motown 50: Yesterday, Today, Forever",
+        "album": "Motown 50: Yesterday, Today, Forever",
+        "year": 0,
+        "artist": "The Temptations",
+        "artists": "The Temptations"
+      },
+      {
+        "id": 10501,
+        "performance": "",
+        "favorites_url": "db:album.title=Motown%2050%3A%20Yesterday%2C%20Today%2C%20Forever&contributor.name=The%20Velvelettes",
+        "favorites_title": "Motown 50: Yesterday, Today, Forever",
+        "album": "Motown 50: Yesterday, Today, Forever",
+        "year": 0,
+        "artist": "The Velvelettes",
+        "artists": "The Velvelettes"
+      },
+      {
+        "id": 9673,
+        "performance": "",
+        "favorites_url": "db:album.title=Motown%2050%3A%20Yesterday%2C%20Today%2C%20Forever&contributor.name=Commodores",
+        "favorites_title": "Motown 50: Yesterday, Today, Forever",
+        "album": "Motown 50: Yesterday, Today, Forever",
+        "year": 0,
+        "artist": "Commodores",
+        "artists": "Commodores"
+      },
+      {
+        "id": 9804,
+        "performance": "",
+        "favorites_url": "db:album.title=Motown%2050%3A%20Yesterday%2C%20Today%2C%20Forever&contributor.name=Four%20Tops",
+        "favorites_title": "Motown 50: Yesterday, Today, Forever",
+        "album": "Motown 50: Yesterday, Today, Forever",
+        "year": 0,
+        "artist": "Four Tops",
+        "artists": "Four Tops"
+      },
+      {
+        "id": 9980,
+        "performance": "",
+        "favorites_url": "db:album.title=Motown%2050%3A%20Yesterday%2C%20Today%2C%20Forever&contributor.name=The%20Marvelettes",
+        "favorites_title": "Motown 50: Yesterday, Today, Forever",
+        "album": "Motown 50: Yesterday, Today, Forever",
+        "year": 0,
+        "artist": "The Marvelettes",
+        "artists": "The Marvelettes"
+      },
+      {
+        "id": 9987,
+        "performance": "",
+        "favorites_url": "db:album.title=Motown%2050%3A%20Yesterday%2C%20Today%2C%20Forever&contributor.name=Mary%20Wells",
+        "favorites_title": "Motown 50: Yesterday, Today, Forever",
+        "album": "Motown 50: Yesterday, Today, Forever",
+        "year": 0,
+        "artist": "Mary Wells",
+        "artists": "Mary Wells"
+      },
+      {
+        "id": 10372,
+        "performance": "",
+        "favorites_url": "db:album.title=Motown%2050%3A%20Yesterday%2C%20Today%2C%20Forever&contributor.name=The%20Spinners",
+        "favorites_title": "Motown 50: Yesterday, Today, Forever",
+        "album": "Motown 50: Yesterday, Today, Forever",
+        "year": 0,
+        "artist": "The Spinners",
+        "artists": "The Spinners"
+      },
+      {
+        "id": 10460,
+        "performance": "",
+        "favorites_url": "db:album.title=Motown%2050%3A%20Yesterday%2C%20Today%2C%20Forever&contributor.name=Thelma%20Houston",
+        "favorites_title": "Motown 50: Yesterday, Today, Forever",
+        "album": "Motown 50: Yesterday, Today, Forever",
+        "year": 0,
+        "artist": "Thelma Houston",
+        "artists": "Thelma Houston"
+      },
+      {
+        "id": 9846,
+        "performance": "",
+        "favorites_url": "db:album.title=The%20Mountain&contributor.name=Haken",
+        "favorites_title": "The Mountain",
+        "album": "The Mountain",
+        "year": 0,
+        "artist": "Haken",
+        "artists": "Haken"
+      }
+    ],
+    "count": 10
+  },
+  "id": 1,
+  "params": [
+    "-",
+    [
+      "albums",
+      "0",
+      1425,
+      "tags:aaly"
+    ]
+  ]
+}
