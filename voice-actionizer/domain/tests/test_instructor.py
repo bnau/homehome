@@ -16,9 +16,9 @@ def test_instructor_should_call_actionizer():
     metadataRetriever = InMemoryMetadataRetriever()
 
     instructor = DomainInstructor(actionizer, answerer, metadataRetriever)
-    instructor.instruct("Lis un livre de Tolkien")
+    instructor.instruct("Lis un livre de Chateaubriand")
 
-    actionizer.read_book.assert_called_once_with("Tolkien")
+    actionizer.read_book.assert_called_once_with("Chateaubriand")
 
 
 def test_instructor_with_embedding():
