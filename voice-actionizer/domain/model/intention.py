@@ -3,7 +3,7 @@ from abc import ABC, abstractmethod
 from domain.driven_port.actionizer import Actionizer
 from domain.driven_port.answerer import Answerer
 
-from langchain_core.pydantic_v1 import BaseModel, Field
+from pydantic import BaseModel, Field
 from typing import Optional
 
 

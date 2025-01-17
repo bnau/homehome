@@ -14,12 +14,13 @@ tasks:
     deps:
       - task: install:ollama
     cmds:
-      - pip install -r requirements.txt
+      - pip install poetry
+      - poetry install --no-root
 
   run:
     desc: Run voice actionizer
     cmds:
-      - python -m driving.stt.main
+      - $(poetry env info -e) -m driving.stt.main
 
   cli:
     desc: Run voice actionizer in cli mode

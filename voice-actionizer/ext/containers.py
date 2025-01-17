@@ -1,5 +1,6 @@
 from dependency_injector import containers, providers
 
+from driven.inmemory.metadata_retriever import InMemoryMetadataRetriever
 from domain.driving_port.instructor import DomainInstructor
 from driven.inmemory.actionizer import InMemoryActionizer
 from driven.inmemory.answerer import InMemoryAnswerer
@@ -10,11 +11,13 @@ from driven.tts.main import Tts
 class InMemory(containers.DeclarativeContainer):
     actionizer = providers.Singleton(InMemoryActionizer)
     answerer = providers.Singleton(InMemoryAnswerer)
+    metadataRetriever = providers.Singleton(InMemoryMetadataRetriever)
 
 
 class RealLife(containers.DeclarativeContainer):
     actionizer = providers.Singleton(ServerActionizer)
     answerer = providers.Singleton(Tts)
+    metadataRetriever = providers.Singleton(InMemoryMetadataRetriever)
 
 
 class Domain(containers.DeclarativeContainer):
@@ -23,7 +26,8 @@ class Domain(containers.DeclarativeContainer):
     instructor = providers.Factory(
         DomainInstructor,
         actionizer=driven.actionizer,
-        answerer=driven.answerer
+        answerer=driven.answerer,
+        metadataRetriever=driven.metadataRetriever
     )
 
 
