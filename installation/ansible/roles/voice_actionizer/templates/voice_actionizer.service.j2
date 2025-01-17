@@ -7,7 +7,7 @@ After=sound.target
 Type=simple
 User={{ ansible_user_id }}
 WorkingDirectory=/opt/homehome/voice-actionizer
-ExecStart=/opt/homehome/voice-actionizer/venv/bin/python -m driving.stt.main
+ExecStart=/opt/homehome/voice-actionizer/venv/bin/python -m ner.driving.stt.main
 Restart=on-failure
 Environment="XDG_RUNTIME_DIR=/run/user/1000"
 Environment="{{pulse_config}}"

@@ -40,9 +40,9 @@
     groups: pulse-access
     append: yes
 
-- name: Ensure driving.stt model directory exists.
+- name: Ensure ner.driving.stt model directory exists.
   ansible.builtin.file:
-    dest: /opt/homehome/voice-actionizer/driving/stt/model
+    dest: /opt/homehome/voice-actionizer/ner/driving/stt/model
     mode: 0766
     state: directory
 
@@ -56,8 +56,8 @@
 
 - name: Move stt model
   ansible.builtin.shell:
-    cmd: mv /tmp/vosk-model-small-fr-0.22/* /opt/homehome/voice-actionizer/driving/stt/model
-    creates: /opt/homehome/voice-actionizer/driving/stt/model/am
+    cmd: mv /tmp/vosk-model-small-fr-0.22/* /opt/homehome/voice-actionizer/ner.driving/stt/model
+    creates: /opt/homehome/voice-actionizer/ner/driving/stt/model/am
 
 - name: Create voice_actionizer service
   become: yes
