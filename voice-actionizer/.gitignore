@@ -2,4 +2,4 @@
 /test.ogg
 /chatbot/.rasa/
 /chatbot/models/
-/driving/stt/model/
+/ner/driving/stt/model/

@@ -1,43 +1,65 @@
 from dependency_injector import containers, providers
 
-from driven.inmemory.metadata_retriever import InMemoryMetadataRetriever
-from domain.driving_port.instructor import DomainInstructor
-from driven.inmemory.actionizer import InMemoryActionizer
-from driven.inmemory.answerer import InMemoryAnswerer
-from driven.action_server.main import ServerActionizer
-from driven.tts.main import Tts
+from actions.driven.home_server.main import HomeServer
+from actions.driven.inmemory.server import InMemoryServer
+from actions.driving_port.book_reader import DomainBookReader
+from actions.driving_port.music_player import DomainMusicPlayer
+from ner.driven.actions.main import MainActionizer
+from ner.driven.inmemory.metadata_retriever import InMemoryMetadataRetriever
+from ner.driven.inmemory.answerer import InMemoryAnswerer
+from ner.driven.tts.main import Tts
+from ner.driving_port.instructor import DomainInstructor
+
+
+class RealLifeActions(containers.DeclarativeContainer):
+    server = providers.Singleton(HomeServer)
+    book_reader = providers.Factory(DomainBookReader, server=server)
+    music_player = providers.Factory(DomainMusicPlayer, server=server)
+
+
+class InMemoryActions(containers.DeclarativeContainer):
+    server = providers.Singleton(InMemoryServer)
+    book_reader = providers.Factory(DomainBookReader, server=server)
+    music_player = providers.Factory(DomainMusicPlayer, server=server)
 
 
 class InMemory(containers.DeclarativeContainer):
-    actionizer = providers.Singleton(InMemoryActionizer)
     answerer = providers.Singleton(InMemoryAnswerer)
-    metadataRetriever = providers.Singleton(InMemoryMetadataRetriever)
+    metadata_retriever = providers.Singleton(InMemoryMetadataRetriever)
 
 
 class RealLife(containers.DeclarativeContainer):
-    actionizer = providers.Singleton(ServerActionizer)
     answerer = providers.Singleton(Tts)
-    metadataRetriever = providers.Singleton(InMemoryMetadataRetriever)
+    metadata_retriever = providers.Singleton(InMemoryMetadataRetriever)
 
 
 class Domain(containers.DeclarativeContainer):
     driven = providers.DependenciesContainer()
+    actions = providers.DependenciesContainer()
+
+    actionizer = providers.Factory(
+        MainActionizer,
+        book_reader=actions.book_reader,
+        music_player=actions.music_player
+    )
 
     instructor = providers.Factory(
         DomainInstructor,
-        actionizer=driven.actionizer,
+        actionizer=actionizer,
         answerer=driven.answerer,
-        metadataRetriever=driven.metadataRetriever
+        metadata_retriever=driven.metadata_retriever
     )
 
 
 class Cli(containers.DeclarativeContainer):
     driven = providers.Container(InMemory)
+    actions = providers.Container(InMemoryActions)
 
-    domain = providers.Container(Domain, driven=driven)
+    domain = providers.Container(Domain, driven=driven, actions=actions)
 
 
 class Device(containers.DeclarativeContainer):
     driven = providers.Container(RealLife)
+    actions = providers.Container(RealLifeActions)
 
-    domain = providers.Container(Domain, driven=driven)
+    domain = providers.Container(Domain, driven=driven, actions=actions)

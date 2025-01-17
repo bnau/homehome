@@ -20,9 +20,9 @@ tasks:
   run:
     desc: Run voice actionizer
     cmds:
-      - $(poetry env info -e) -m driving.stt.main
+      - $(poetry env info -e) -m ner.driving.stt.main
 
   cli:
     desc: Run voice actionizer in cli mode
     cmds:
-      - python -m driving.cli.main
+      - python -m ner.driving.cli.main
