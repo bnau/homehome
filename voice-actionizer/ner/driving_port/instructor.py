@@ -3,7 +3,8 @@ from abc import ABC, abstractmethod
 from ner.driven_port.actionizer import Actionizer
 from ner.driven_port.answerer import Answerer
 from ner.driven_port.metadata_retriever import MetadataRetriever
-from ner.orchestrator.graph import invoke_graph
+from ner.driven_port.store import Store
+from ner.orchestrator.main import Orchestrator
 
 
 class Instructor(ABC):
@@ -15,13 +16,13 @@ class Instructor(ABC):
 class DomainInstructor:
     actionizer: Actionizer
     answerer: Answerer
-    metadata_retriever: MetadataRetriever
+    orchestrator: Orchestrator
 
-    def __init__(self, actionizer: Actionizer, answerer: Answerer, metadata_retriever: MetadataRetriever):
+    def __init__(self, actionizer: Actionizer, answerer: Answerer, metadata_retriever: MetadataRetriever, store: Store):
         self.actionizer = actionizer
         self.answerer = answerer
-        self.metadata_retriever = metadata_retriever
+        self.orchestrator = Orchestrator(metadata_retriever, store)
 
     def instruct(self, command: str):
-        factory = invoke_graph(command, self.metadata_retriever)
+        factory = self.orchestrator.invoke(command)
         factory.create_intention(self.actionizer, self.answerer).actionize()

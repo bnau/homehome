@@ -2,7 +2,7 @@ import sys
 
 from dependency_injector.wiring import inject, Provide
 
-from ext.containers import Cli
+from di.containers import Cli
 from ner.driving_port.instructor import Instructor
 
 

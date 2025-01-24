@@ -7,7 +7,7 @@ from vosk import Model, KaldiRecognizer
 import soundcard as sc
 
 from ner.driving_port.instructor import Instructor
-from ext.containers import Device
+from di.containers import Device
 
 vosk_model = Model("ner/driving/stt/model")
 rate = 48000

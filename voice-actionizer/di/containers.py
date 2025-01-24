@@ -7,6 +7,7 @@ from actions.driving_port.music_player import DomainMusicPlayer
 from ner.driven.actions.main import MainActionizer
 from ner.driven.inmemory.metadata_retriever import InMemoryMetadataRetriever
 from ner.driven.inmemory.answerer import InMemoryAnswerer
+from ner.driven.qdrant.store import QdrantStore
 from ner.driven.tts.main import Tts
 from ner.driving_port.instructor import DomainInstructor
 
@@ -26,11 +27,13 @@ class InMemoryActions(containers.DeclarativeContainer):
 class InMemory(containers.DeclarativeContainer):
     answerer = providers.Singleton(InMemoryAnswerer)
     metadata_retriever = providers.Singleton(InMemoryMetadataRetriever)
+    store = providers.Singleton(QdrantStore, location=":memory:")
 
 
 class RealLife(containers.DeclarativeContainer):
     answerer = providers.Singleton(Tts)
     metadata_retriever = providers.Singleton(InMemoryMetadataRetriever)
+    store = providers.Singleton(QdrantStore, location=":memory:")
 
 
 class Domain(containers.DeclarativeContainer):
@@ -47,7 +50,8 @@ class Domain(containers.DeclarativeContainer):
         DomainInstructor,
         actionizer=actionizer,
         answerer=driven.answerer,
-        metadata_retriever=driven.metadata_retriever
+        metadata_retriever=driven.metadata_retriever,
+        store=driven.store
     )
 
 
