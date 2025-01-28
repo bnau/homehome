@@ -9,7 +9,11 @@ from ner.driven.inmemory.metadata_retriever import InMemoryMetadataRetriever
 from ner.driven.inmemory.answerer import InMemoryAnswerer
 from ner.driven.qdrant.store import QdrantStore
 from ner.driven.tts.main import Tts
+from ner.driving_port.command import DomainCommand
 from ner.driving_port.instructor import DomainInstructor
+
+config = providers.Configuration(ini_files=["config.ini"])
+config.load()
 
 
 class RealLifeActions(containers.DeclarativeContainer):
@@ -27,13 +31,13 @@ class InMemoryActions(containers.DeclarativeContainer):
 class InMemory(containers.DeclarativeContainer):
     answerer = providers.Singleton(InMemoryAnswerer)
     metadata_retriever = providers.Singleton(InMemoryMetadataRetriever)
-    store = providers.Singleton(QdrantStore, location=":memory:")
+    store = providers.Singleton(QdrantStore, path=config.store.path)
 
 
 class RealLife(containers.DeclarativeContainer):
     answerer = providers.Singleton(Tts)
     metadata_retriever = providers.Singleton(InMemoryMetadataRetriever)
-    store = providers.Singleton(QdrantStore, location=":memory:")
+    store = providers.Singleton(QdrantStore, path=config.store.path)
 
 
 class Domain(containers.DeclarativeContainer):
@@ -54,8 +58,14 @@ class Domain(containers.DeclarativeContainer):
         store=driven.store
     )
 
+    command = providers.Factory(
+        DomainCommand,
+        metadata_retriever=driven.metadata_retriever,
+        store=driven.store
+    )
 
-class Cli(containers.DeclarativeContainer):
+
+class Chat(containers.DeclarativeContainer):
     driven = providers.Container(InMemory)
     actions = providers.Container(InMemoryActions)
 

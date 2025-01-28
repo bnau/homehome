@@ -16,7 +16,7 @@ def test_instructor_should_call_actionizer():
     )
     metadata_retriever = InMemoryMetadataRetriever()
     store = InMemoryStore([
-        '"Mémoires d\'Outre-Tombe" is a book by the author "Chateaubriand"',
+        '"Mémoires d Outre-Tombe" is a book by the author "Chateaubriand"',
     ])
 
     instructor = DomainInstructor(actionizer, answerer, metadata_retriever, store)
@@ -35,9 +35,10 @@ def test_instructor_with_embedding():
     metadata_retriever = InMemoryMetadataRetriever()
     store = InMemoryStore([
         '"The Mountain" is the title of an album by the artist "Haken".',
+        '"Affinity" is the title of an album by the artist "Haken".',
     ])
 
     instructor = DomainInstructor(actionizer, answerer, metadata_retriever, store)
-    instructor.instruct("Joue the mountain par haken")
+    instructor.instruct("joue the mountain par haken")
 
     actionizer.play_album.assert_called_once_with("Haken", "The Mountain")

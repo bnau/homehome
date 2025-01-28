@@ -22,7 +22,12 @@ tasks:
     cmds:
       - $(poetry env info -e) -m ner.driving.stt.main
 
-  cli:
-    desc: Run voice actionizer in cli mode
+  store_albums:
+    desc: Store albums metadata in Qdrant
     cmds:
-      - python -m ner.driving.cli.main
+      - python -m ner.driving.cli.main store_albums
+
+  chat:
+    desc: Run voice actionizer in chat mode
+    cmds:
+      - python -m ner.driving.chat.main

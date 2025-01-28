@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 
 from langchain_core.documents import Document
 from langchain_ollama import OllamaEmbeddings
@@ -11,16 +11,17 @@ from ner.driven_port.store import Store
 
 class QdrantStore(Store):
 
-    def __init__(self, location: str) -> None:
-        client = QdrantClient(location)
+    def __init__(self, path: Optional[str]) -> None:
+        self.__client = QdrantClient(path=path) if path is not None else QdrantClient(":memory:")
 
-        client.create_collection(
-            collection_name="demo_collection",
-            vectors_config=VectorParams(size=1024, distance=Distance.COSINE),
-        )
+        if not self.__client.collection_exists("demo_collection"):
+            self.__client.create_collection(
+                collection_name="demo_collection",
+                vectors_config=VectorParams(size=1024, distance=Distance.COSINE),
+            )
 
         self.__store = QdrantVectorStore(
-            client=client,
+            client=self.__client,
             collection_name="demo_collection",
             embedding=OllamaEmbeddings(
                 model="mxbai-embed-large",
