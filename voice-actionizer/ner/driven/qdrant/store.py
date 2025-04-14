@@ -12,17 +12,17 @@ from ner.driven_port.store import Store
 class QdrantStore(Store):
 
     def __init__(self, path: Optional[str]) -> None:
-        self.__client = QdrantClient(path=path) if path is not None else QdrantClient(":memory:")
+        self.__client = QdrantClient(path=path) if path is not None else QdrantClient(host="localhost", port=6333)
 
-        if not self.__client.collection_exists("demo_collection"):
+        if not self.__client.collection_exists("library"):
             self.__client.create_collection(
-                collection_name="demo_collection",
+                collection_name="library",
                 vectors_config=VectorParams(size=1024, distance=Distance.COSINE),
             )
 
         self.__store = QdrantVectorStore(
             client=self.__client,
-            collection_name="demo_collection",
+            collection_name="library",
             embedding=OllamaEmbeddings(
                 model="mxbai-embed-large",
             ),

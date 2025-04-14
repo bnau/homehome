@@ -38,7 +38,7 @@ class Orchestrator:
             parser = PydanticOutputParser(pydantic_object=IntentionFactory)
             runnable = prompt | self.__llm | parser
 
-            vectors = self.__store.retrieve(state["messages"][-1])
+            vectors = self.__store.retrieve(state["messages"][-1].content)
 
             response = runnable.invoke({"input": state["messages"][-1], "context": vectors}, config=config)
             return {"messages": [response]}
@@ -58,7 +58,7 @@ class Orchestrator:
         return self.__graph.invoke(
             {"messages": [HumanMessage(command)]},
             config={"configurable": {"thread_id": str(uuid.uuid4())},
-                    "callbacks": []}).get('messages')[-1]
+                    "callbacks": [self.__langfuse_handler]}).get('messages')[-1]
 
     def store_albums(self):
         albums = self.__metadata_retriever.get_albums()

@@ -42,3 +42,21 @@ def test_instructor_with_embedding():
     instructor.instruct("joue the mountain par haken")
 
     actionizer.play_album.assert_called_once_with("Haken", "The Mountain")
+
+
+def test_instructor_with_embedding_and_title_completeion():
+    actionizer = unittest.mock.create_autospec(
+        Actionizer, instance=True
+    )
+    answerer = unittest.mock.create_autospec(
+        Answerer, instance=True
+    )
+    metadata_retriever = InMemoryMetadataRetriever()
+    store = InMemoryStore([
+        '"""Metropolis Part 2: Scenes From A Memory""" is the title of an album by the artist "Dream Theater".',
+    ])
+
+    instructor = DomainInstructor(actionizer, answerer, metadata_retriever, store)
+    instructor.instruct("joue metropolis de dream theater")
+
+    actionizer.play_album.assert_called_once_with("Dream Theater", "Metropolis Part 2: Scenes From A Memory")
