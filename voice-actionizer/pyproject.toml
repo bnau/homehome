@@ -1,3 +1,26 @@
+[project]
+name = "voice-actionizer"
+version = "0.1.0"
+requires-python = ">=3.12"
+dependencies = [
+    "PyAudio==0.2.12",
+    "pyttsx3==2.90",
+    "vosk==0.3.45",
+    "requests==2.32",
+    "numpy>=1.0.0",
+    "SoundCard>=0.4.3",
+    "langchain>=0.3",
+    "langchain-ollama>=0.2",
+    "langchain-qdrant>=0.2.0",
+    "langfuse>=2.57.5",
+    "langgraph>=0.2.61",
+    "dependency-injector>=4.42.0b1",
+    "pytest==8.3.2"
+]
+
+[tool.setuptools]
+py-modules = []
+
 [tool.poetry]
 name = "homehome/voice-actionizer"
 version = "0.1.0"

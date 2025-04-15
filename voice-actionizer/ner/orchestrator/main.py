@@ -23,8 +23,8 @@ class Orchestrator:
         self.__store = store
         self.__llm = ChatOllama(model="homehome", temperature=0)
         self.__langfuse_handler = CallbackHandler(
-            public_key=os.environ.get("LANGFUSE_INIT_PROJECT_PUBLIC_KEY"),
-            secret_key=os.environ.get("LANGFUSE_INIT_PROJECT_SECRET_KEY"),
+            public_key="pk-lf-611768d8-efde-4926-9a6a-3481a66f62f9",
+            secret_key="sk-lf-75d87508-4494-49e7-b65f-ea869a654059",
             host="http://localhost:3000"
         )
 

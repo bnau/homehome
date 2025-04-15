@@ -5,3 +5,5 @@ cache
 .direnv
 .env.secret
 .task
+/.idea/
+/voice-actionizer/voice_actionizer.egg-info/

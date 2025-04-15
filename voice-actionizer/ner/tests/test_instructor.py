@@ -44,7 +44,7 @@ def test_instructor_with_embedding():
     actionizer.play_album.assert_called_once_with("Haken", "The Mountain")
 
 
-def test_instructor_with_embedding_and_title_completeion():
+def test_instructor_with_embedding_and_title_completion():
     actionizer = unittest.mock.create_autospec(
         Actionizer, instance=True
     )

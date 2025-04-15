@@ -4,30 +4,33 @@ tasks:
   install:ollama:
     internal: true
     cmds:
+      - sudo apt install portaudio19-dev
       - curl -fsSL https://ollama.com/install.sh | sh
-      - ollama pull phi3
+      - ollama pull mxbai-embed-large
+      - ollama pull llama3.2
+      - ollama create homehome
     status:
-      - ollama show phi3
+      - ollama show llama3.2
 
   install:
     desc: Install voice actionizer
     deps:
       - task: install:ollama
     cmds:
-      - pip install poetry
-      - poetry install --no-root
+      - brew install uv
+      - uv sync
 
   run:
     desc: Run voice actionizer
     cmds:
-      - $(poetry env info -e) -m ner.driving.stt.main
+      - uv run -- python -m ner.driving.stt.main
 
   store_albums:
     desc: Store albums metadata in Qdrant
     cmds:
-      - python -m ner.driving.cli.main store_albums
+      - uv run -- python -m ner.driving.cli.main store_albums
 
   chat:
     desc: Run voice actionizer in chat mode
     cmds:
-      - python -m ner.driving.chat.main
+      - uv run -- python -m ner.driving.chat.main
